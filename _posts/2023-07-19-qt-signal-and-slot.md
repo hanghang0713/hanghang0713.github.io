@@ -7,7 +7,7 @@ title:  "Qt 中的信号与槽"
 
 在 GUI 编程中，当更改一个地方时，我们通常希望通知另外一个地方。即对象之间能够相互通信。一般的 UI 框架往往都会使用回调的方式来实现。而在 Qt 中。则采用了另外一种方式，即信号与槽，它是 Qt 中的一个核心机制，基于 Qt 的 `meta-object system` 实现的。
 
-![singnal and slot usage](/images/signal_slot_usage.png "信号与槽使用示意")
+![singnal and slot usage](/assets/images/signal_slot_usage.png "信号与槽使用示意")
 
 - 信号与槽是松散耦合的，发出信号的类既不知道也不关心哪些槽接收信号
 - 信号与槽是类型安全的，信号的签名必须与接收槽的签名相匹配。（槽的签名可能更短，因为可以忽略某些参数）
@@ -30,6 +30,8 @@ title:  "Qt 中的信号与槽"
 
 
 ## meta-object
+
+Qt 的 `meta-object system` 为对象间通信提供了信号与槽机制，还实现了运行时类型信息，动态属性系统。
 
 
 
