@@ -424,6 +424,10 @@ void QMetaObject::activate(QObject *sender, int signalOffset, int local_signal_i
 - 根据连接的类型判断是否需要直接发送，还是放到事件队列中
 - 调用接收方的槽函数
 
+## 相关
+[Qt 中的信号与槽 (2)](./2023-08-13-qt_signal-and-slot-two.md)
+
+
 ## 引用
 - https://doc.qt.io/qt-6/signalsandslots.html
 - https://doc.qt.io/qt-6/metaobjects.html
