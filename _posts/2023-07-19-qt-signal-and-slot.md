@@ -425,7 +425,7 @@ void QMetaObject::activate(QObject *sender, int signalOffset, int local_signal_i
 - 调用接收方的槽函数
 
 ## 相关
-[Qt 中的信号与槽 (2)]({{ site.baseurl }}/_posts/2023-08-13-qt-signal-and-slot-two.md)
+[Qt 中的信号与槽 (2)]({{ site.baseurl }}/_posts/2023-08-13-qt-signal-and-slot-two.html)
 
 
 ## 引用
