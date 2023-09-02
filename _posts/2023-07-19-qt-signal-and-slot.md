@@ -2,6 +2,7 @@
 layout: post
 title:  "Qt 中的信号与槽"
 tags: C++ Qt
+categories: Qt 
 ---
 
 # 信号与槽的实现原理 {ignore=true}
