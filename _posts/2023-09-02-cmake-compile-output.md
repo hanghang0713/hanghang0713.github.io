@@ -10,7 +10,7 @@ category: Tools
 [toc]
 
 ## 语法
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+`set(CMAKE_EXPORT_COMPILE_COMMANDS ON)`
 
 ## 作用
 主要用于生成 `compile_commands.json` 文件，
