@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "std::invoke_result(std::result_of in c++11)"
+title:  "关于线程池，我们在谈论什么"
 tags: C++ Concurrency
 category: Concurrency 
 ---
