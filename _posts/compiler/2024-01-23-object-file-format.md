@@ -13,3 +13,7 @@ category: C++
 现在流行的可执行文件格式包括 `PE-COFF(windows)` 与 `ELF(linux)`，它们都是 `COFF` 格式的变种. 目标文件就是编译后但是未链接的中间文件(windows 下的 .obj 与 Linux 下的 .o)。
 
 不止是目标文件，动态链接库(DLL, dynamic Linking Library, windows 下的 dll 和 linux 下的 .so)与静态库(Static Linking Library, windows 下的 .lib 与 linux 下的 .a)都按照可执行文件的格式进行存储。
+
+![object file format](/assets/images/compile-basic/object_file.png "目标文件格式")
+
+### 目标文件结构
