@@ -1,3 +1,10 @@
+---
+layout: post
+title:  "Windbg 使用经验总结"
+tags: C++ Windows
+category: Windows 
+---
+
 # Windbg 使用指南
 
 ## 介绍
@@ -79,3 +86,4 @@ Dump 文件的作用是提供一个快照，记录了崩溃时程序的内存状
 
 ## 参考资料
 - [开始使用 WinDbg](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/getting-started-with-windbg)
+
