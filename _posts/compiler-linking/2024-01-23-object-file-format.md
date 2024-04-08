@@ -28,3 +28,24 @@ category: C++
 
 
 ### 目标文件的内容 
+![object file format section](/assets/images/compile-basic/obj_file_section.png "一个简单的目标文件的段信息")
+
+从上面的信息可以看到，常见的段信息有:
+- .text 代码段
+- .data 数据段
+- .bss 存放未初始化的全局变量和局部静态变量，不占据实际的空间
+- .rodata 只读数据段
+- comment 注释信息段
+- .note.gnu.property 堆栈提示段
+
+![onject file structure](/assets/images/compile-basic/section-structure.png "段的结构示意图")
+
+#### 代码段
+
+> objdump 常用参数
+> -s 将所有段的内容通过十六进制的方式打印出来
+> -d 将包含指令的段进行反汇编
+
+![text section](/assets/images/compile-basic/text-section.png "代码段")
+
+可以看到 .text 段里面包含的正是 SimpleSection.c 里面两个函数的指令。
