@@ -49,3 +49,21 @@ category: C++
 ![text section](/assets/images/compile-basic/text-section.png "代码段")
 
 可以看到 .text 段里面包含的正是 SimpleSection.c 里面两个函数的指令。
+
+#### 数据段和只读数据段
+![data section](/assets/images/compile-basic/data-section.png "数据段")
+
+.data 段存放的是 **已经初始化的全局静态变量和局部静态变量**。
+.data 段大小是 8，正好是源码中的 `global_init_var` `static_var` 中的两个变量的大小。每个变量4个字节。
+.data 段中 0x54 0x00 0x00 0x00 对应的正是 `global_init_var` 的值 84
+.data 段中 0x40 0x00 0x00 0x00 对应的正是 `static_var` 的值 64
+
+.rodata 段中存放的是只读数据，一般是只读变量和字符串常量。
+
+> 单独设立 .rodata 段有很多好处
+> 从语义上支持 const 语法
+> 操作系统可以将 .rodata 映射成只读, 保证程序的安全性
+> 嵌入式系统，可以将 .rodata 放入 ROM 只读存储器中，保证访问储存器的正确性
+
+.rodata 段的大小是 4， 存放的是源码中的 "%d\n" 的字符串常量
+.rodata 中的 `25640a00` 对应的正是这个字符串的 ASCII 字节序，最后以 `\0` 结尾
