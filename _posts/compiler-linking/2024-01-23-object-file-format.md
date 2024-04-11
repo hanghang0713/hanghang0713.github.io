@@ -67,3 +67,42 @@ category: C++
 
 .rodata 段的大小是 4， 存放的是源码中的 "%d\n" 的字符串常量
 .rodata 中的 `25640a00` 对应的正是这个字符串的 ASCII 字节序，最后以 `\0` 结尾
+
+#### BSS 段
+![bss section](/assets/images/compile-basic/bss-section.png "BSS 段")
+
+.bss 段存放的是 **未初始化的全局变量和局部静态变量** 
+更准确的说法是 .bss  段为他们预留了空间
+有些编译器会将未初始化的全局变量放在 .bss 段，有些则只是预留空间
+编译单元内部可见的静态变量一定会放在 .bss 段
+
+```C++
+static int x1 = 0
+static int x2 = 1
+```
+
+上面的代码中，x1 会被放在 .bss 段，x2 会被放在 .data 段。因为 x1 = 0, 可以认为是未初始化的，会被优化掉以节约空间。因为 .bss 不占磁盘空间 (因为 .bss 段的大小在段表中记载了。不像其他段，还有 Contents)
+
+#### 其他段
+除了 .text .data .bss 三个最常用的段以外，ELF 文件也有可能包含其他的段。
+
+![other section](/assets/images/compile-basic/other-section.png "其他 段")
+
+以 `.` 作为前缀的，表示这些表的名字是系统保留的。应用程序可以用一些非系统保留的名字作为段名。
+比如我们可以在 ELF 文件中插入一条 “music” 的段，脸面存放一首 MP3 音乐
+
+``` shell
+# 可以使用 objcopy 工具将一个二进制文件作为目标文件中的一个段
+
+objcopy -I binary -O elf32-i386 -B i386 image.jpg image.o
+```
+
+![customize section](/assets/images/compile-basic/customize-section.png "自定义段")
+
+有些时候，我们可能需要将某些变量或者代码放到指定的段中，以实现某些特殊的功能。
+
+```C
+__attribute__((section("FOO"))) int global = 42
+__attribute__((section("BAR"))) void fun() {}
+```
+
