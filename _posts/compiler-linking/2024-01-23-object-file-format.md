@@ -106,3 +106,41 @@ __attribute__((section("FOO"))) int global = 42
 __attribute__((section("BAR"))) void fun() {}
 ```
 
+### ELF 文件结构描述
+
+#### ELF 文件头
+ELF 目标文件格式的最前部是 ELF 文件头，它包含了描述整个文件的基本属性：ELF 文件版本，目标机器型号，程序入口地址等。
+
+> `readelf` 命令可以详细查看 ELF 文件 
+
+![elf header](/assets/images/compile-basic/elf-header.png "ELF 文件头")
+从上面的图中可以看到，ELF 文件头中定义了：
+- ELF 魔数
+- 文件机器字节长度
+- 数据存储方式
+- 版本
+- 运行平台
+- ABI 版本
+- ELF 重定位类型
+- 硬件平台
+- 硬件平台版本
+- 入口地址
+- 程序头入口和长度
+- 段表的位置和长度、数量
+
+ELF 文件头结构及相关常数被定义在 `/usr/include/elf.h` 里面。ELF 文件有 32 位 和 64 位两个版本，对应的 ELF 文件头结构也有两个版本，分别是 `ELF32_Ehdr` 和 `ELF64_Ehdr`。
+![elf header define](Class)
+
+除了 `e_ident` 中定义了 `Class` `Data` `Version` `OS/ABI`  `ABI Version` 这5个参数外，其他的参数和 `readelf` 指令输出的信息都是一一对应的
+
+### 段表
+段表中保存了段的基本属性，描述了 ELF 的各个段的信息，编译器，链接器和装载器都是依靠段表来定位和访问各个段的属性的。
+
+> 相较于 `objdump -h`, 使用 `readelf -S` 可以查看更加详细的段表结构
+
+![detailed section header table](/assets/images/compile-basic/detailed-section-header-table.png "段表的详细信息")
+
+段表的结构比较简单，它是一个以 `Elf_Shdr` 结构体为元素的一个数组，数组元素的个数等于段的个数。`Elf_Shdr` 又被称为段描述符。ELF 段表的第一个元素是无效的段描述符，用 `NULL` 表示
+
+> 数组的存放方式
+ELF 文件里面很多地方都使用了与段表类似的数组，一般定义一个固定的长度，然后依次存放，就可以使用下标来索引。
