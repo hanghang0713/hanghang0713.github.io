@@ -165,3 +165,47 @@ ELF 文件里面很多地方都使用了与段表类似的数组，一般定义�
 - 段表字符串表 `.shstrtab` 保存段表中用到的字符串， 比如段名
 
 `e_shstrndx` 表示段表字符串表在段表中的下标，因此只要分析 `ELF` 文件头，就可以得到段表和段表字符串表的位置，从而解析整个 `ELF` 文件。
+
+## 链接的接口——符号
+链接过程的本质就是将不同的目标文件拼接在一起，可以形成一个整体。为了能够顺利拼接，因此需要有固定的规则才可以。
+我们将函数和变量统称为符号，函数名或变量名称为符号名。
+
+链接过程很关键的一点是对符号的管理，每一个文件都有一个相应的符号表 `Symbol Table` 每个定义的符号有一个值，叫做符号值。
+
+- 定义在本目标文件中的全局符号， 可以被其他目标文件引用。
+- 在本目标文件中引用的符号，定义在其他目标文件。一般叫做 **外部符号**
+- 段名，由编译器产生的符号
+- 局部符号，编译单元内部可见。对于链接过程没有作用
+- 行号信息
+
+### ELF 符号表结构
+ELF 文件中的符号表往往是一个段 `.symtab`，
+![elf symbol table](/assets/images/compile-basic/elf-symbol-struct.png "ELF 符号表结构")
+
+
+**符号类型和绑定信息**
+![elf type and bind](/assets/images/compile-basic/symbol-type-and-bind.png "ELF 符号类型和绑定信息")
+
+**符号所在段**
+如果符号定义在本目标文件中，那么这个成员表示段在段表中的下标.
+如果不是定义在本目标文件中.或者对于某些特殊符号.定义如下:
+![symbol special index](/assets/images/compile-basic/symbol-index-special.png "特殊的段下标")
+
+**符号值**
+如果一个符号是一个函数或者变量的定义,则这个符号的值 `st_value` 就是这个函数和变量的地址.
+但是下面几种情况,需要特殊对待:
+- 目标文件中,是符号的定义,但是下标不为 `SHN_COMMON` 类型的. 那么符号值表示符号在段中的偏移
+- `SHN_COMMON` 类型, 符号值表示对齐属性.
+- 可执行文件中, 符号值表示符号的虚拟地址,动态链接器会用到这个地址
+
+
+![symbol summarize](/assets/images/compile-basic/symbol-summarize.png "符号表")
+
+- fun1 和 main 函数都定义在一个 .c 文件中,所在位置都为代码段, 因此 NDX 为 1. 它们是函数,所以类型和绑定属性分别为 STT_FUNC 和 STB_GLOBAL
+- printf 在 SimpleSection.c 文件中被引用,但是没有定义, NDX 是 SHN_UNDEF
+- global_init_var 已初始化的全局变量,定义在 .bss 段中
+- global_uninit_var 未初始化的全局变量, 它是一个 SHN_COMMON 类型.
+- static_var.x 静态变量,编译单元内部可见.
+- STT_SECTION 类型的符号,表示下标为 Ndx 所在段的段名, 比如 2 号符号表示 .text
+
+
