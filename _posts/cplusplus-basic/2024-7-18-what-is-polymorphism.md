@@ -11,14 +11,13 @@ category: cplusplus basic
 在编程语言理论和类型论中，多态是使用单个符号来表示多个不同的类型。
 C++ 中，多态可以分为编译时多态和运行时多态
 
-## C++ 中的多态是什么
-
 ## 为什么需要多态，它解决了什么问题
+代码重复编写,提高了代码的通用性和可复用性
 
-## 多态是如何实现的
+## C++ 中的多态是什么
 编译时多态和运行时多态
 
-#### 编译时多态
+### 编译时多态
 通过函数和操作符重载,或者函数模板
 
 **重载（overloading）**
@@ -48,3 +47,79 @@ template < parameter-list > function-declaration
 - ```extern template return-type name ( parameter-list ) ;```
 
 显式实例化定义强制实例化它们所引用的函数或成员函数。它可以出现在程序中模板定义之后的任何位置
+
+###### 隐式实例化
+当一段代码需要在定义了函数的上下文中引用这个函数时,并且函数还没有被显示实例化,就会发生隐式实例化.
+
+```C++
+#include <iostream>
+ 
+template<typename T>
+void f(T s)
+{
+    std::cout << s << '\n';
+}
+ 
+int main()
+{
+    f<double>(1); // instantiates and calls f<double>(double)
+    f<>('a');     // instantiates and calls f<char>(char)
+    f(7);         // instantiates and calls f<int>(int)
+    void (*pf)(std::string) = f; // instantiates f<string>(string)
+    pf("∇");                     // calls f<string>(string)
+}
+```
+
+### 运行时多态
+运行时多态是在运行时解析对象.通过虚函数和函数重写 (override) 来实现.
+
+> [!note]  
+> 如果需要实现运行时解析对象,那么在编译期就应该先用一个占位符类似的东西,比如指针.然后在实际运行时找到实际的对应的需要使用的对象
+
+当派生类具有基类的成员函数之一的定义时，就会发生 `override`
+
+
+#### 成员数据无法实现运行时多态
+无法通过成员数据实现运行时多态，基类的引用永远执行基类的数据成员
+```C+++
+class Animal {
+public:
+    std::string color = "Black";
+};
+
+class Dog : public Animal {
+public:
+    std::string color = "Grey";
+};
+
+```
+![data polymorphism](/assets/images/cplusplus-basic/data_polymorphism.png "成员数据无法实现多态性")
+
+#### 基类和派生类中的同名函数
+基类和派生类中的普通的同名成员函数也无法实现多态。因为静态链接。对该函数的调用仅由编译器设置一次，那就是位于基类中的函数。
+
+> 利用该特性，有相关的技术 NVI
+
+```C+++
+class Animal {
+public:
+    void PrintClassName() {
+        std::cout << "Animal" <<std::endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void PrintClassName() {
+        std::cout << "Dog" <<std::endl;
+    }
+};
+
+```
+![non virtual function](/assets/images/cplusplus-basic/non-virtual-function.png "non virtual function")
+
+
+
+#### 虚函数
+虚函数是通过 `virtual` 关键字在基类中声明，并在派生类中重新定义(`overrride`) 的函数。
+它告诉编译器执行后期绑定，在执行
