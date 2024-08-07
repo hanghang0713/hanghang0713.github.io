@@ -118,8 +118,17 @@ public:
 ```
 ![non virtual function](/assets/images/cplusplus-basic/non-virtual-function.png "non virtual function")
 
-
-
 #### 虚函数
 虚函数是通过 `virtual` 关键字在基类中声明，并在派生类中重新定义(`overrride`) 的函数。
-它告诉编译器执行后期绑定，在执行
+它告诉编译器执行后期绑定，并在运行时执行。
+
+> 构造函数中不能使用虚拟调用的机制，因为派生类的重写还没有发生。
+
+虚函数允许我们创建基类指针列表，并调用任何类型的派生类的方法，甚至不用关心具体的类型。
+
+##### 那么编译器是如何进行运行时的决议的？
+- vtable 存放函数指针的表，每个类维护一份
+- vptr 指向 `vtable` 的指针，每个实例实例对象维护一份
+
+![vtable and vptr](/assets/images/cplusplus-basic/vptr_vtable.png "虚函数表和虚函数表指针")
+
