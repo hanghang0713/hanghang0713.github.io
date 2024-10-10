@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "what is a image"
-tags: iamge opencv
+tags: image opencv
 category: opencv
 ---
 
