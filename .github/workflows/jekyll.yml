@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: _site
+          path: ./_site
 
   # Deployment job
   deploy:
