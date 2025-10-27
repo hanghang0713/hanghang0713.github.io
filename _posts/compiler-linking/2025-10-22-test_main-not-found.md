@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  符号文件是什么，如何使用它们
+title:  undefined reference to test_main(int, char**)
 description: 程序员的自我修养-链接，装载与库
 tags: C++ compiler symbol
 category: C++ 
 ---
 
-#  `undefined reference` to `test_main(int, char**)`
+#  undefined reference to test_main(int, char**)
 
 在编译一个项目的单元测试的过程冲碰到了如下的链接错误：
 
