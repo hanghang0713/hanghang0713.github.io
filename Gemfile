@@ -7,6 +7,10 @@ gem 'rake', '~> 13.1'
 gem 'jekyll-theme-chirpy', '~> 6.4', '>= 6.4.2'
 gem 'google-protobuf', '~> 3.25', '>= 3.25.2'
 
+# Required for Ruby 3.4+ compatibility
+gem 'bigdecimal'
+gem 'logger'
+
 group :test do
   gem "html-proofer", "~> 3.18"
 end
