@@ -12,6 +12,12 @@ template<class T>
 struct atomic;
 ```
 
+> Each instantiation and full specialization of the std::atomic template defines an atomic type. If one thread writes to an atomic object while another thread reads from it, the behavior is well-defined (see memory model for details on data races).
+> 
+> In addition, accesses to atomic objects may establish inter-thread synchronization and order non-atomic memory accesses as specified by std::memory_order.
+>
+> std::atomic is neither copyable nor movable.
+
 `std::atomic` 是一个提供了原子操作的模板类，它对指定的类型提供原子操作。
 
 此外，对原子类型的访问可能会建立线程间的同步，并根据 `std::memory_order` 对非原子内存访问进行排序。
@@ -32,9 +38,62 @@ struct atomic;
 
 我们可能会想，使用锁也能实现上面的需求，但是原子操作锁的效率更高。
 
+
+## Memory Model
+
+> Defines the semantics of computer memory storage for the purpose of the C++ abstract machine.
+>
+> The memory available to a C++ program is one or more contiguous sequences of bytes. Each byte in memory has a unique address.
+
+**Byte**: 字节是内存中最小的可寻址单元。它被定义为一个连续的比特序列，其大小足以容纳大量数据。
+
+**Memory Location**: 被如下的 `object representation` 所占用的存储空间.
+- `scalar type that is not a bit-field`
+- `the largest contiguous sequence of bit-fields of non-zero length`
+ 
 ## std::atomic 基本用法
 
+```c++
+#include <atomic>
+#include <iostream>
+#include <thread>
+#include <vector>
+
+namespace {
+
+std::atomic_int acnt;
+int cnt;
+
+void f() {
+    for (auto n{10000}; n; --n) {
+        ++acnt;
+        ++cnt;
+        // Note: for this example, relaxed memory order is sufficient,
+        // e.g. acnt.fetch_add(1, std::memory_order_relaxed);
+    }
+}
+
+}  // namespace
+
+int main() {
+
+    std::vector<std::thread> pool;
+    for (int n = 0; n < 10; ++n) {
+        pool.emplace_back(f);
+    }
+
+    for (auto &n : pool) {
+        n.join();
+    }
+
+    std::cout << "The atomic counter is " << acnt << '/n'
+              << "The non-atomic counter is " << cnt << '/n';
+}
+```
+![atomic result](/assets/images/cplusplus-basic/atomic_result.png)
+
 ## std::memory_order 
+
 
 ### 什么是非原子访问内存
 
